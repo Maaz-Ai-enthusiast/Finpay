@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  const navItems = ["Products", "Solutions", "Pricing", "Learn"];
+  const navItems = [
+    { name: "Products", path: "/products" },
+    { name: "Solutions", path: "/solutions" },
+    { name: "Pricing", path: "/pricing" },
+    { name: "Learn", path: "/learn" }
+  ];
 
   return (
     <motion.nav
@@ -18,31 +25,39 @@ const Navigation: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
-          >
-            <div className="w-8 h-8 bg-finpay-teal rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">F</span>
-            </div>
-            <span className="text-xl font-bold text-foreground">Finpay</span>
-          </motion.div>
+          <Link to="/">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-2"
+            >
+              <div className="w-8 h-8 bg-finpay-teal rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">F</span>
+              </div>
+              <span className="text-xl font-bold text-foreground">Finpay</span>
+            </motion.div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
-              <motion.a
-                key={item}
-                href="#"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-200 relative group"
-              >
-                {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-finpay-teal transition-all duration-300 group-hover:w-full" />
-              </motion.a>
+              <Link key={item.name} to={item.path}>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className={`transition-colors duration-200 relative group ${
+                    location.pathname === item.path 
+                      ? "text-finpay-teal" 
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {item.name}
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-finpay-teal transition-all duration-300 ${
+                    location.pathname === item.path ? "w-full" : "w-0 group-hover:w-full"
+                  }`} />
+                </motion.div>
+              </Link>
             ))}
           </div>
 
@@ -81,13 +96,18 @@ const Navigation: React.FC = () => {
         >
           <div className="py-4 space-y-4">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="block text-muted-foreground hover:text-foreground transition-colors duration-200 py-2"
+              <Link
+                key={item.name}
+                to={item.path}
+                className={`block py-2 transition-colors duration-200 ${
+                  location.pathname === item.path 
+                    ? "text-finpay-teal" 
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                onClick={() => setIsOpen(false)}
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
             ))}
             <div className="pt-4 space-y-2">
               <Button variant="ghost" className="w-full justify-start">
