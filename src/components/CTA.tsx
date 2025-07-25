@@ -43,7 +43,7 @@ const CTA: React.FC = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg"
+                className="border-white/30 text-[#2c8c96] hover:bg-white/10 px-8 py-4 text-lg"
               >
                 Schedule Demo →
               </Button>
